@@ -1,0 +1,5 @@
+Training Start:Mon, 13 May 2024 03:36:18 +0000
+
+Generative Model Training Start:Mon, 13 May 2024 03:36:35 +0000
+Iter-[1000/548400]; loss: 198.362; kl:672.935; p_loss:0.461; rec:0.493 ; p_loss1:0.002; loss_cvae_compare:80.688
+Iter-[2000/548400]; loss: 127.098; kl:78.203; p_loss:0.386; rec:0.476 ; p_loss1:0.000; loss_cvae_compare:88.891
