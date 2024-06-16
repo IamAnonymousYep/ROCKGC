@@ -56,7 +56,7 @@ def synthesize_feature_test_my(netG, ae, dataset, opt,att):
         G_sample = ae.encoder(netG.decode(z, text_feat))[:,:opt.RS_dim]
     return G_sample
 
-def eval_relation_addloss_nell(model,ae,Ep,relationNet,FE,dataset,opt,mode ):   # initial witohut _nell
+def eval_relation_addloss_nell(model,ae,Ep,relationNet,FE,dataset,opt,mode ):
     root_path = os.path.abspath(os.path.dirname(__file__))
     model.eval()
     ae.eval()
@@ -68,7 +68,6 @@ def eval_relation_addloss_nell(model,ae,Ep,relationNet,FE,dataset,opt,mode ):   
     hits5 = []
     hits1 = []
     mrr = []
-    # 改成用关系去进行补全
     # test_candidates = json.load(open(f"../../KGC_data/{opt.dataset}/" + mode + "_candidates.json"))
     test_candidates = json.load(open(os.path.join(root_path,f"KGC_data/{opt.dataset}",mode + "_candidates.json" )))
     rela2label = {}
@@ -80,7 +79,6 @@ def eval_relation_addloss_nell(model,ae,Ep,relationNet,FE,dataset,opt,mode ):   
         rela2label[query_] = label_id
         relation_vecs = synthesize_feature_test_my(model, ae, dataset, opt, att=description)
         relation_vecs = relation_vecs.detach().cpu().numpy()
-        # 对relation_vecs取平均值
         relation_vecs = relation_vecs.mean(axis=0)
         rela_maxtri[label_id] = relation_vecs
         label_id += 1
@@ -154,7 +152,6 @@ def eval_relation_addloss_wiki(model,ae,Ep,relationNet,FE,dataset,opt,mode):
     hits5 = []
     hits1 = []
     mrr = []
-    # 改成用关系去进行补全
     
     test_candidates = json.load(open(os.path.join(root_path, f"KGC_data/{opt.dataset}", mode + "_tasks.json") ))
     rela2label = {}
@@ -166,7 +163,6 @@ def eval_relation_addloss_wiki(model,ae,Ep,relationNet,FE,dataset,opt,mode):
         rela2label[query_] = label_id
         relation_vecs = synthesize_feature_test_my(model, ae, dataset, opt, att=description)
         relation_vecs = relation_vecs.detach().cpu().numpy()
-        # 对relation_vecs取平均值
         relation_vecs = relation_vecs.mean(axis=0)
         rela_maxtri[label_id] = relation_vecs
         label_id += 1
@@ -238,7 +234,7 @@ def eval_relation_addloss_GZSL(model,ae,Ep,relationNet,FE,dataset,opt,mode):
     print('##EVALUATING ON test DATA ——predict relation_GZSL')
     mrr_seen = []
     mrr_unseen = []
-    # 改成用关系去进行补全
+
 
     root_path = os.path.abspath(os.path.dirname(__file__))
     # test_unseen_relation = json.load(open(f"../../KGC_data/{opt.dataset}/" + "test_tasks.json"))
@@ -254,7 +250,6 @@ def eval_relation_addloss_GZSL(model,ae,Ep,relationNet,FE,dataset,opt,mode):
         rela2label[query_] = label_id
         relation_vecs = synthesize_feature_test_my(model, ae, dataset, opt, att=description)
         relation_vecs = relation_vecs.detach().cpu().numpy()
-        # 对relation_vecs取平均值
         relation_vecs = relation_vecs.mean(axis=0)
         rela_maxtri[label_id] = relation_vecs
         label_id += 1
@@ -263,7 +258,6 @@ def eval_relation_addloss_GZSL(model,ae,Ep,relationNet,FE,dataset,opt,mode):
         rela2label[query_] = label_id
         relation_vecs = synthesize_feature_test_my(model, ae, dataset, opt, att=description)
         relation_vecs = relation_vecs.detach().cpu().numpy()
-        # 对relation_vecs取平均值
         relation_vecs = relation_vecs.mean(axis=0)
         rela_maxtri[label_id] = relation_vecs
         label_id += 1
@@ -311,6 +305,6 @@ def eval_relation_addloss_GZSL(model,ae,Ep,relationNet,FE,dataset,opt,mode):
     print('MAP_seen: {:.3f}'.format(np.mean(mrr_seen)))
     S = np.mean(mrr_seen)
     U = np.mean(mrr_unseen)
-    H = (2 * S * U) / (S + U)   # 谐波平均 计算均值
+    H = (2 * S * U) / (S + U)
     print('MAP_H: {:.3f}'.format(H))
     return S, U, H
