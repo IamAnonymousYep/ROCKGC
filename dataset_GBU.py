@@ -26,14 +26,14 @@ class DATA_LOADER(object):
         # label = np.load(opt.data_presave_path + '/'+ opt.dataset + '/entity_pair_label' + opt.extractor_way +'.npz')['LABEL']
         label = np.load(opt.data_presave_path + '/' + opt.dataset + '/entity_pair_label_addloss' + '.npz')['LABEL']
         # ([  0,   0,   0, ..., 112, 112, 112])
-        seen_label = np.unique(label)   # 获取数组 label 中的唯一值，即所有出现过的标签。
+        seen_label = np.unique(label)
         feature = np.load(opt.data_presave_path + '/'+ opt.dataset + '/entity_pair_matrix_addloss' + '.npz')['EPM']
         # feature = np.load(opt.data_presave_path + '/' + opt.dataset + '/entity_pair_matrix' + opt.extractor_way + '.npz')['EPM']
         # [[ 1.6808336   0.45335892    ...    0.2787776  0.33077055 ]
         #  ...
         #  [ 1.6528339   0.5654188     ...   0.85813725  -0.13600463]]
         # number : [[181053][200]]
-        attribute = np.load(opt.data_presave_path +'/'+  opt.dataset + r'/rela_matrix_.npz')['relaM']     # 实体之间关系的属性信息
+        attribute = np.load(opt.data_presave_path +'/'+  opt.dataset + r'/rela_matrix_.npz')['relaM']
 
 
         self.attribute = attribute

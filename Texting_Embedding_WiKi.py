@@ -97,7 +97,6 @@ def WiKi_text_embedding(data_path, dataname = 'WiKi'):
     for i,rela in enumerate(rela_list):
         reldes2ids[rela] = int(i)
     json.dump(reldes2ids, open(data_path + "/reldes2ids", 'w'))
-    # corpus_tfidf=> 每个关系对应的词的tiidf值, vocab_tfidf =>词表 , corpus=>word_id列表
     corpus_tfidf, vocab_tfidf, corpus = calculate_tfidf_wiki(rela_list, corpus_text, word2id)
     rela_matrix_Wiki = generate_matrix_(WordMatrix, corpus, corpus_tfidf, rela2id_Wiki, rela_list)
     rela_matrix_Wiki = rela_matrix_Wiki * 10

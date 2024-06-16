@@ -9,33 +9,26 @@ class VAE(nn.Module):
         super(VAE, self).__init__()
         self.z_size = args.Z_dim   # Z_dim--latent_dim
         self.args = args
-        self.q_z_nn_output_dim = args.q_z_nn_output_dim  # 将编码器神经网络的输出维度设置为 args.q_z_nn_output_dim
+        self.q_z_nn_output_dim = args.q_z_nn_output_dim
         self.q_z_nn, self.q_z_mean, self.q_z_var = self.create_encoder()
-        # 调用 create_encoder() 创建编码器神经网络，并将返回的神经网络及其输出均值和方差分别存储在 q_z_nn、q_z_mean 和 q_z_var 中。
         self.p_x_nn, self.p_x_mean = self.create_decoder()
-        # 调用 create_decoder() 创建解码器神经网络，并将返回的神经网络及其输出均值存储在 p_x_nn 和 p_x_mean 中。
         self.FloatTensor = torch.FloatTensor
 
     def create_encoder(self):
-        # 编码器的任务是将输入数据映射到潜在空间的概率分布上，通常是高斯分布。这个高斯分布的参数包括均值和方差。
-        # 通过使用神经网络来表示均值和方差，VAE 模型可以更好地学习数据的潜在结构，并生成更加准确和具有多样性的样本。
         q_z_nn = nn.Sequential(
             nn.Linear(self.args.X_dim + self.args.C_dim, self.args.vae_encoder_dim), # args.vae_encoder_dim NELL 500  WiKi 800
             nn.LeakyReLU(0.7, inplace=False),    # initial equals inplace=True
-            nn.Linear(self.args.vae_encoder_dim, self.args.vae_encoder_dim), # 输入输出神经元一样多
+            nn.Linear(self.args.vae_encoder_dim, self.args.vae_encoder_dim),
             nn.Dropout(self.args.vae_enc_drop),
             nn.LeakyReLU(0.7, inplace=False),    # initial equals inplace=True
             nn.Linear(self.args.vae_encoder_dim, self.q_z_nn_output_dim)
         )
         q_z_mean = nn.Linear(self.q_z_nn_output_dim, self.z_size)
-        # 用于参数化一个潜在空间的高斯分布的均值和方差     通常用在变分自编码器VAE中
         q_z_var = nn.Sequential(
             nn.Linear(self.q_z_nn_output_dim, self.z_size),
             nn.Dropout(0.2),
             nn.Softplus(),
         )
-        # 在推断过程中，神经网络作为一个近似推断器，用于估计潜在空间的均值和方差。
-        # 这个过程通常被称为 变分逼近，目标是找到能够最大化下界的近似后验。
         return q_z_nn, q_z_mean, q_z_var
 
     def create_decoder(self):

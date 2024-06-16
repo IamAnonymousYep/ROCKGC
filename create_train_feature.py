@@ -74,7 +74,7 @@ class Feature_extracter_addloss(object):
         self.Extractor = Extractor_add_loss_target(self.embed_dim, self.num_symbols, label_nums= self.label_nums, latent_dim_size = self.latent_dim_size,
                                                    ep_dim= self.ep_dim , sp_dim1 = self.sp_dim1, sp_dim2= self.sp_dim2, embed=self.symbol2vec)
         self.Extractor.cuda()
-        self.Extractor.load_state_dict(torch.load(self.extractor_path + '/intialExtractor' +self.loss_way + self.embed_model))  # 加载模型参数。
+        self.Extractor.load_state_dict(torch.load(self.extractor_path + '/intialExtractor' +self.loss_way + self.embed_model))
         print("pretrain_model:" + '/intialExtractor' + self.loss_way + self.embed_model)
         return
     def build_connection(self, max_=50):
