@@ -1,4 +1,3 @@
-#用预训练模型提取实体对的向量表征
 import numpy as np
 import torch
 import json
